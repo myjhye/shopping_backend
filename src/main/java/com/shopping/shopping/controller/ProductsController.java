@@ -5,10 +5,7 @@ import com.shopping.shopping.service.ProductsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
@@ -17,11 +14,18 @@ public class ProductsController {
 
     private ProductsService productsService;
 
-    // 상품 추가 REST API
+    // 상품 추가 REST API (POST)
     @PostMapping
     public ResponseEntity<ProductsDto> createProducts(@RequestBody ProductsDto productsDto) {
         ProductsDto savedProducts = productsService.createProducts(productsDto);
         return new ResponseEntity<>(savedProducts, HttpStatus.CREATED);
+    }
+
+    // 상품 단일 조회 REST API (GET)
+    @GetMapping("{id}")
+    public ResponseEntity<ProductsDto> getProductById(@PathVariable("id") Long productId) {
+        ProductsDto productsDto = productsService.getProductById(productId);
+        return ResponseEntity.ok(productsDto);
     }
 
 }
