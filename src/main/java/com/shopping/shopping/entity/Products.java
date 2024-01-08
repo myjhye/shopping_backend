@@ -22,7 +22,7 @@ public class Products {
     private String image;
     private String title;
     private String description;
-    private String price;
+    private double price;
     private String gender;
     private String options;
     private String date;

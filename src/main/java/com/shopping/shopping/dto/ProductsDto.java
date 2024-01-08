@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Blob;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,7 +17,7 @@ public class ProductsDto {
     private String image;
     private String title;
     private String description;
-    private String price;
+    private double price;
     private String gender;
     private String options;
     private String date;
