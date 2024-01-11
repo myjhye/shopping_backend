@@ -9,6 +9,9 @@ import com.shopping.shopping.service.ProductsService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class ProductsServiceImpl implements ProductsService {
@@ -33,5 +36,14 @@ public class ProductsServiceImpl implements ProductsService {
                 .orElseThrow(() -> new ResourceNotFoundException("상품이 존재하지 않음 : " + productId));
 
         return ProductsMapper.mapToProductsDto(product);
+    }
+
+    // 상품 전체 조회
+    @Override
+    public List<ProductsDto> getAllProducts() {
+
+        List<Products> products = productsRepository.findAll();
+        return products.stream().map((product) -> ProductsMapper.mapToProductsDto(product))
+                    .collect(Collectors.toList());
     }
 }

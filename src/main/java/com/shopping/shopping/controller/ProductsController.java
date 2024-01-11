@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin("*")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/products")
@@ -26,6 +29,13 @@ public class ProductsController {
     public ResponseEntity<ProductsDto> getProductById(@PathVariable("id") Long productId) {
         ProductsDto productsDto = productsService.getProductById(productId);
         return ResponseEntity.ok(productsDto);
+    }
+
+    // 상품 전체 조회 REST API (GET)
+    @GetMapping
+    public ResponseEntity<List<ProductsDto>> getAllProducts() {
+        List<ProductsDto> products = productsService.getAllProducts();
+        return ResponseEntity.ok(products);
     }
 
 }
