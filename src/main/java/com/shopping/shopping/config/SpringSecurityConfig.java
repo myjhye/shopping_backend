@@ -2,6 +2,7 @@ package com.shopping.shopping.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -22,17 +23,27 @@ public class SpringSecurityConfig {
     }
 
     // 로그인한 사용자만 접근 허용
+    // 역할(admin, user)에 따른 기능(get, post, put, delete, patch) 허용
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) -> {
-                    authorize.anyRequest().authenticated();
+                    authorize.requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN");
+                    //authorize.requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "USER");
+                    authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll();
+                    authorize.requestMatchers(HttpMethod.PATCH, "/api/**").hasAnyRole("ADMIN", "USER");
+
+
+                    authorize.anyRequest().hasRole("ADMIN");
                 }).httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
 
+    // 사용자 정보(jh, admin의 username, pw, role)을 메모리에 저장
     @Bean
     public UserDetailsService userDetailsService() {
 
@@ -44,7 +55,7 @@ public class SpringSecurityConfig {
 
         UserDetails admin = User.builder()
                 .username("admin")
-                .password(passwordEncoder().encode("admin"))
+                .password(passwordEncoder().encode("password"))
                 .roles("ADMIN")
                 .build();
 
