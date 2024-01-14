@@ -1,5 +1,6 @@
 package com.shopping.shopping.controller;
 
+import com.shopping.shopping.dto.LoginDto;
 import com.shopping.shopping.dto.RegisterDto;
 import com.shopping.shopping.service.AuthService;
 import lombok.AllArgsConstructor;
@@ -22,5 +23,12 @@ public class AuthController {
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
         String response = authService.register(registerDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    // 로그인 rest api
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+        String response = authService.login(loginDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
